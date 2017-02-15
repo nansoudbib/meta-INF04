@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Annuaire M1IF13</title>
+		<script src="annuaire.js"></script>
+		<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+	</head>
+
+	<body>
+		<h1>Un simple annuaire de sites Web</h1>
+		<script>
+			$(function() {
+				var annuaire = new Annuaire(); 
+				
+				var showPairs = function() {													
+					$('#pairs').html('');
+					$.each(annuaire.collection, 
+						function(key, value) {
+							var pairHtml = '<div>' + key + ' : ' + value + ' <a href="#" key="' + key + '" class="pairRemover">(remove)</a></div>';
+							$('#pairs').append(pairHtml);						
+							$(".pairRemover").click(removePair);
+						}
+					);
+				}
+				
+				var removePair = function(event) {
+					var key = event.target.attributes.getNamedItem("key").value;
+					annuaire.remove(key);
+					showPairs();										
+				}
+
+				$("#addPair").click(function() {
+					var key = $("#key").val(),
+						value = $("#value").val();	  
+					annuaire.bind(key, value);
+					showPairs();
+				});
+				
+			});			
+		</script>
+
+		<div>
+			Nom : <input type="text" id="key"/>
+			URL : <input type="text" id="value"/>
+			<a href="#" id="addPair">Ajouter à l'annuaire</a>			
+		</div>
+		
+		<div id="pairs"></div>
+
+	</body>
+
+</html>
